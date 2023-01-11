@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+spec:
+  # Number of desired pods
+  replicas: 2
+  # Selector defines how to find which pods to manage by this deployment
+  selector:
+    matchLabels:
+      app: echo
+  template:
+    # Pod template
+    metadata:
+      labels:
+        # Define label that deployment matches on
+        app: echo
+    spec:
+      containers:
+        - name: my-container
+          image: kicbase/echo-server:latest

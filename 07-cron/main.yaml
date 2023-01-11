@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: hello
+spec:
+  # cron schedule
+  schedule: "* * * * *"
+  # How many old successful jobs that should be kept
+  successfulJobsHistoryLimit: 2
+  # How many old failed jobs that should be kept
+  failedJobsHistoryLimit: 2
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          # Spec of container that should be invoked. This container should run to completion and not block
+          containers:
+            - name: hello
+              image: busybox
+              command:
+                - /bin/sh
+                - -c
+                - date; echo Hello from the Kubernetes cluster
+          restartPolicy: OnFailure

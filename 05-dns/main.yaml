@@ -1,0 +1,31 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  name: host
+spec:
+  containers:
+    - name: host
+      image: curlimages/curl
+      command: ["sleep"]
+      args: ["infinity"]
+---
+kind: Pod
+apiVersion: v1
+metadata:
+  name: target
+  labels:
+    app: target-app
+spec:
+  containers:
+    - name: target
+      image: "kicbase/echo-server:1.0"
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: target-service
+spec:
+  selector:
+    app: target-app
+  ports:
+    - port: 8080

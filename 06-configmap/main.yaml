@@ -1,0 +1,44 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: custom-config-file
+data:
+  config.yaml: |
+    test:
+      - default
+    test2:
+     - "value1"
+     - "value2"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: custom-config-values
+data:
+  TEST1: "value1"
+  TEST2: "value2"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: config-test
+spec:
+  containers:
+    - name: config-test
+      image: alpine
+      command: ["sleep"]
+      args: ["infinity"]
+      # Load environment variables from an configmap reference
+      envFrom:
+        - configMapRef:
+            name: custom-config-values
+      volumeMounts:
+        # Mount a defined volume as a file
+        - name: config-volume # Reference to the defined volume (line 43)
+          mountPath: /config.yaml # Where the content should be mounted inside the container
+          subPath: config.yaml # Which key in the config map that should be mounted
+  volumes:
+    # Define a volume based on a config map
+    - name: config-volume
+      configMap:
+        name: custom-config-file

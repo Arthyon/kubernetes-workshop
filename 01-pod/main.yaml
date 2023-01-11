@@ -1,0 +1,11 @@
+kind: Pod
+apiVersion: v1
+metadata:
+  # Name of pod
+  name: my-pod
+spec:
+  containers:
+    # Name of container inside pod
+    - name: my-container
+      # Image (assumed to be from docker hub)
+      image: "kicbase/echo-server:latest"
